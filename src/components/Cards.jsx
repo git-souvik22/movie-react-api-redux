@@ -16,7 +16,6 @@ const Cards = ({ query }) => {
   const state = useSelector((state) => state);
   let { movie } = state;
   let { data } = movie;
-  let { results } = data;
 
   // const filteredMovies = results.filter((item) =>
   //   item.original_title.toLowerCase().includes(query.toLowerCase())
