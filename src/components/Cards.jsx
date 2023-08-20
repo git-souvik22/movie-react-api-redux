@@ -13,12 +13,11 @@ const Cards = ({ query }) => {
     );
   };
 
-  const state = useSelector((state) => state);
-  let { movie } = state;
-  let { data } = movie;
-  let { results } = data;
+  const movies = useSelector((state) => state.movie.data.results);
 
-  const filteredMovies = results.filter((item) =>
+  const state = useSelector((state) => state);
+
+  const filteredMovies = movies.filter((item) =>
     item.original_title.toLowerCase().includes(query.toLowerCase())
   );
 
@@ -36,8 +35,8 @@ const Cards = ({ query }) => {
   return (
     <>
       {query === "" ? (
-        state.movie.data &&
-        data.results.map((e) => (
+        movies &&
+        movies.map((e) => (
           <div
             className="card border-2"
             style={{
