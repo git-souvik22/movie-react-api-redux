@@ -16,8 +16,9 @@ const Cards = ({ query }) => {
   const state = useSelector((state) => state);
   let { movie } = state;
   let { data } = movie;
+  let { results } = data;
 
-  const filteredMovies = data.results.filter((item) =>
+  const filteredMovies = results.filter((item) =>
     item.original_title.toLowerCase().includes(query.toLowerCase())
   );
 
@@ -79,47 +80,49 @@ const Cards = ({ query }) => {
         ))
       ) : (
         <>
-          {filteredMovies.map((ele) => (
-            <div
-              className="card border-2"
-              style={{
-                width: "16.7rem",
-                marginBottom: "20px",
-                borderRadius: "12px",
-                cursor: "pointer",
-              }}
-              onClick={() =>
-                handleMovieClick(
-                  ele.id,
-                  ele.original_title,
-                  ele.poster_path,
-                  ele.vote_average,
-                  ele.overview
-                )
-              }
-              key={ele.id}
-            >
-              <img
-                src={"https://image.tmdb.org/t/p/w185" + ele.poster_path}
-                className="card-img-top"
+          {Array(
+            filteredMovies.map((ele) => (
+              <div
+                className="card border-2"
                 style={{
-                  width: "16.5rem",
-                  height: "15rem",
-                  backgroundColor: "#02030A",
-                  borderTopLeftRadius: "12px",
-                  borderTopRightRadius: "12px",
+                  width: "16.7rem",
+                  marginBottom: "20px",
+                  borderRadius: "12px",
+                  cursor: "pointer",
                 }}
-                alt="..."
-              />
-              <div className="card-body">
-                <div className="d-flex justify-content-between">
-                  <h5 className="card-title">{ele.original_title}</h5>
-                  <p>{ele.vote_average}</p>
+                onClick={() =>
+                  handleMovieClick(
+                    ele.id,
+                    ele.original_title,
+                    ele.poster_path,
+                    ele.vote_average,
+                    ele.overview
+                  )
+                }
+                key={ele.id}
+              >
+                <img
+                  src={"https://image.tmdb.org/t/p/w185" + ele.poster_path}
+                  className="card-img-top"
+                  style={{
+                    width: "16.5rem",
+                    height: "15rem",
+                    backgroundColor: "#02030A",
+                    borderTopLeftRadius: "12px",
+                    borderTopRightRadius: "12px",
+                  }}
+                  alt="..."
+                />
+                <div className="card-body">
+                  <div className="d-flex justify-content-between">
+                    <h5 className="card-title">{ele.original_title}</h5>
+                    <p>{ele.vote_average}</p>
+                  </div>
+                  <p className="card-text">{ele.overview}</p>
                 </div>
-                <p className="card-text">{ele.overview}</p>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </>
       )}
     </>
