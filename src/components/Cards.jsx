@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchMovies } from "../redux/slice/movieSlice";
 
-const Cards = ({ query }) => {
+const Cards = ({ query, filteredCard }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -13,13 +13,10 @@ const Cards = ({ query }) => {
     );
   };
 
-  const movies = useSelector((state) => state.movie.data.results);
-
   const state = useSelector((state) => state);
-
-  const filteredMovies = movies.filter((item) =>
-    item.original_title.toLowerCase().includes(query.toLowerCase())
-  );
+  let { movie } = state;
+  let { data } = movie;
+  let { results } = data;
 
   useEffect(() => {
     dispatch(fetchMovies());
@@ -35,8 +32,8 @@ const Cards = ({ query }) => {
   return (
     <>
       {query === "" ? (
-        movies &&
-        movies.map((e) => (
+        results &&
+        results.map((e) => (
           <div
             className="card border-2"
             style={{
@@ -79,49 +76,47 @@ const Cards = ({ query }) => {
         ))
       ) : (
         <>
-          {Array(
-            filteredMovies.map((ele) => (
-              <div
-                className="card border-2"
+          {filteredCard.map((ele) => (
+            <div
+              className="card border-2"
+              style={{
+                width: "16.7rem",
+                marginBottom: "20px",
+                borderRadius: "12px",
+                cursor: "pointer",
+              }}
+              onClick={() =>
+                handleMovieClick(
+                  ele.id,
+                  ele.original_title,
+                  ele.poster_path,
+                  ele.vote_average,
+                  ele.overview
+                )
+              }
+              key={ele.id}
+            >
+              <img
+                src={"https://image.tmdb.org/t/p/w185" + ele.poster_path}
+                className="card-img-top"
                 style={{
-                  width: "16.7rem",
-                  marginBottom: "20px",
-                  borderRadius: "12px",
-                  cursor: "pointer",
+                  width: "16.5rem",
+                  height: "15rem",
+                  backgroundColor: "#02030A",
+                  borderTopLeftRadius: "12px",
+                  borderTopRightRadius: "12px",
                 }}
-                onClick={() =>
-                  handleMovieClick(
-                    ele.id,
-                    ele.original_title,
-                    ele.poster_path,
-                    ele.vote_average,
-                    ele.overview
-                  )
-                }
-                key={ele.id}
-              >
-                <img
-                  src={"https://image.tmdb.org/t/p/w185" + ele.poster_path}
-                  className="card-img-top"
-                  style={{
-                    width: "16.5rem",
-                    height: "15rem",
-                    backgroundColor: "#02030A",
-                    borderTopLeftRadius: "12px",
-                    borderTopRightRadius: "12px",
-                  }}
-                  alt="..."
-                />
-                <div className="card-body">
-                  <div className="d-flex justify-content-between">
-                    <h5 className="card-title">{ele.original_title}</h5>
-                    <p>{ele.vote_average}</p>
-                  </div>
-                  <p className="card-text">{ele.overview}</p>
+                alt="..."
+              />
+              <div className="card-body">
+                <div className="d-flex justify-content-between">
+                  <h5 className="card-title">{ele.original_title}</h5>
+                  <p>{ele.vote_average}</p>
                 </div>
+                <p className="card-text">{ele.overview}</p>
               </div>
-            ))
-          )}
+            </div>
+          ))}
         </>
       )}
     </>
